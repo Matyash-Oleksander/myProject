@@ -18,7 +18,7 @@ const initialState = {
   password: "",
 };
 
-export default function App() {
+export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [state, setState] = useState(initialState);
@@ -35,7 +35,7 @@ export default function App() {
       >
         <ImageBackground
           style={{ ...styles.imageBg, height: "100%" }}
-          source={require("./assets/images/photo-bg.png")}
+          source={require("../../assets/images/photo-bg.png")}
         >
           <SafeAreaView style={{ flex: 1, justifyContent: "flex-end" }}>
             <View style={styles.container}>
@@ -79,9 +79,11 @@ export default function App() {
               >
                 <Text style={styles.btnTitle}>Войти</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Registration")}
+              >
                 <Text style={styles.textLogin}>
-                  Нет аккаунта? <Text>Зарегистрироваться</Text>
+                  Нет аккаунта? <Text> Зарегистрироваться</Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#212121",
-    fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",

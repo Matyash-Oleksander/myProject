@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "name": "myNewProject",
     "slug": "myNewProject",
     "version": "1.0.0",
@@ -11,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*", "assets/fonts/*"],
     "ios": {
       "supportsTablet": true
     },

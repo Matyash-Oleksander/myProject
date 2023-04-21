@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -14,17 +14,44 @@ import {
 } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const initialState = {
   login: "",
   email: "",
   password: "",
+  photoUri: null,
 };
 
-export default function App() {
+export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [state, setState] = useState(initialState);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Дайте дозвіл на доступ до камери та галереї!");
+        }
+      }
+    })();
+  }, []);
+
+  const handleChoosePhoto = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setState((prevState) => ({ ...prevState, photoUri: result.uri }));
+    }
+  };
 
   const onSignUp = () => {
     console.log(state);
@@ -38,18 +65,27 @@ export default function App() {
       >
         <ImageBackground
           style={{ ...styles.imageBg, height: "100%" }}
-          source={require("./assets/images/photo-bg.png")}
+          source={require("../../assets/images/photo-bg.png")}
         >
           <SafeAreaView style={{ flex: 1, justifyContent: "flex-end" }}>
             <View style={styles.container}>
-              <View style={styles.photo}>
-                <AntDesign
-                  name="pluscircleo"
-                  size={25}
-                  color="#FF6C00"
-                  style={styles.avatarIcon}
-                />
-              </View>
+              <TouchableOpacity onPress={handleChoosePhoto}>
+                <View style={styles.photo}>
+                  {state.photoUri ? (
+                    <Image
+                      source={{ uri: state.photoUri }}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="pluscircleo"
+                      size={25}
+                      color="#FF6C00"
+                      style={styles.avatarIcon}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
               <Text style={styles.title}>Регистрация</Text>
               <View
                 style={{
@@ -100,7 +136,9 @@ export default function App() {
                 <Text style={styles.btnTitle}>Зарегистрироваться</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text style={styles.textLogin}>Уже есть аккаунт? Войти</Text>
+                <Text style={styles.textLogin}>
+                  Уже есть аккаунт? <Text> Войти</Text>
+                </Text>
               </TouchableOpacity>
             </View>
           </SafeAreaView>
@@ -144,7 +182,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#212121",
-    fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Bold",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
