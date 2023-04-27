@@ -8,6 +8,7 @@ import LoginScreen from "./screens/auth/LoginScreen";
 import PostsScreen from "./screens/mainScreens/PostsScreen";
 import CreatePostsScreen from "./screens/mainScreens/CreatePostsScreen";
 import ProfileScreen from "./screens/mainScreens/ProfileScreen";
+// import DefaultScreenPosts from "./screens/nestedScreens/DefaultScreenPosts";
 
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -34,7 +35,12 @@ export const useRoute = (isAuth) => {
     );
   } else {
     return (
-      <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+      <MainTab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: [{ display: "flex" }, null],
+        }}
+      >
         <MainTab.Screen
           name="Posts"
           component={PostsScreen}

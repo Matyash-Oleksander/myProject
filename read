@@ -1,2 +1,4 @@
 Twilio password
 StronaAlla_31011963
+
+npm start -- --reset-cache
