@@ -13,6 +13,9 @@ import {
   SafeAreaView,
 } from "react-native";
 
+import { authSignInUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+
 const initialState = {
   email: "",
   password: "",
@@ -23,8 +26,13 @@ export default function LoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(true);
   const [state, setState] = useState(initialState);
 
+  const dispatch = useDispatch();
+
   const onSignUp = () => {
-    console.log(state);
+    dispatch(authSignInUser(state));
+    console.log("click-------------------------");
+
+    console.log("user---------------", user);
     setState(initialState);
   };
 

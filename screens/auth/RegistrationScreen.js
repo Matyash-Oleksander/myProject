@@ -16,8 +16,11 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
+import { authSignUpUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+
 const initialState = {
-  login: "",
+  nickname: "",
   email: "",
   password: "",
   photoUri: null,
@@ -27,6 +30,8 @@ export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const [state, setState] = useState(initialState);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -54,7 +59,10 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const onSignUp = () => {
-    console.log(state);
+    dispatch(authSignUpUser(state));
+
+    // console.log("user----------------", user);
+    // console.log(state);
     setState(initialState);
   };
 
@@ -97,9 +105,9 @@ export default function RegistrationScreen({ navigation }) {
                   style={styles.input}
                   placeholder="Логин"
                   onFocus={() => setIsShowKeyboard(true)}
-                  value={state.login}
+                  value={state.nickname}
                   onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, login: value }))
+                    setState((prevState) => ({ ...prevState, nickname: value }))
                   }
                 />
                 <TextInput
