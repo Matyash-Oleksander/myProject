@@ -29,8 +29,9 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const onSignUp = () => {
-    dispatch(authSignInUser(state));
     console.log("click-------------------------");
+
+    dispatch(authSignInUser(state));
 
     console.log("user---------------", user);
     setState(initialState);

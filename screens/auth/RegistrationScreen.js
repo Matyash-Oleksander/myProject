@@ -61,7 +61,7 @@ export default function RegistrationScreen({ navigation }) {
   const onSignUp = () => {
     dispatch(authSignUpUser(state));
 
-    // console.log("user----------------", user);
+    console.log("user----------------", user);
     // console.log(state);
     setState(initialState);
   };
