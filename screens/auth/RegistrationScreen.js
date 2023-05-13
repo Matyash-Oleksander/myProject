@@ -20,7 +20,7 @@ import { authSignUpUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 
 const initialState = {
-  nickname: "",
+  nickName: "",
   email: "",
   password: "",
   photoUri: null,
@@ -105,9 +105,9 @@ export default function RegistrationScreen({ navigation }) {
                   style={styles.input}
                   placeholder="Логин"
                   onFocus={() => setIsShowKeyboard(true)}
-                  value={state.nickname}
+                  value={state.nickName}
                   onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, nickname: value }))
+                    setState((prevState) => ({ ...prevState, nickName: value }))
                   }
                 />
                 <TextInput

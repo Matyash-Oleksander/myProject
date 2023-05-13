@@ -33,7 +33,6 @@ export default function LoginScreen({ navigation }) {
 
     dispatch(authSignInUser(state));
 
-    console.log("user---------------", user);
     setState(initialState);
   };
 
