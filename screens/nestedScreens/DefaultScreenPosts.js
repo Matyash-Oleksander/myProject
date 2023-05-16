@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, Image, Button } from "react-native";
+import { storage, db, database } from "../../firebase/config";
+import { doc, onSnapshot, collection } from "firebase/firestore";
 
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  console.log("route.params", route.params);
+  // console.log("route.params", route.params);
+
+  const getAllPost = () => {
+    const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
+      setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
-  console.log("posts", posts);
+    getAllPost();
+  }, []);
+
+  // console.log("posts", posts);
   return (
     <View style={styles.container}>
       <FlatList

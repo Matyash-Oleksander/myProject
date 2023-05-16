@@ -11,11 +11,10 @@ import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-
-// const initialState = {
-//   name: "",
-//   location: "",
-// };
+import { storage, db, database } from "../../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const CreatePostsScreen = ({ navigation }) => {
   // const [state, setState] = useState(initialState);
@@ -24,19 +23,57 @@ const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [locationPermission, setLocationPermission] = useState(null);
+  const [comment, setComment] = useState("");
   const [location, setLocation] = useState(null);
+
+  const { userId, nickName } = useSelector((state) => state.auth);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
-    console.log("latitude", location.coords.latitude);
-    console.log("longitude", location.coords.longitude);
     setPhoto(photo.uri);
-    console.log("photo", photo);
   };
 
   const sendPhoto = () => {
+    uploadPostToServer();
     navigation.navigate("DefaultScreen", { photo });
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photoUrl = await uploadPhotoToServer();
+
+      const postsCollectionRef = collection(db, "posts"); // Update the collection path here
+
+      const createPost = await addDoc(postsCollectionRef, {
+        photo: photoUrl,
+        comment,
+        location: location.coords,
+        userId,
+        nickName,
+      });
+
+      console.log("createPost--------", createPost);
+    } catch (error) {
+      console.log("Error uploading post", error);
+    }
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePostId = Date.now().toString();
+
+    const storageRef = await ref(storage, `postImage/${uniquePostId}`);
+
+    const data = await uploadBytes(storageRef, file);
+
+    const processedPhoto = await getDownloadURL(
+      ref(storage, `postImage/${uniquePostId}`)
+    );
+
+    return processedPhoto;
   };
 
   useEffect(() => {
@@ -82,9 +119,10 @@ const CreatePostsScreen = ({ navigation }) => {
         style={styles.inputText}
         placeholder="Назва локації..."
         onFocus={() => setIsShowKeyboard(true)}
-        // value={state.name}
+        onChangeText={setComment}
+        // value={state.comment}
         // onChangeText={(value) =>
-        //   setState((prevState) => ({ ...prevState, name: value }))
+        //   setState((prevState) => ({ ...prevState, comment: value }))
         // }
       />
       <View style={styles.inputContainer}>
@@ -93,6 +131,7 @@ const CreatePostsScreen = ({ navigation }) => {
           style={styles.inputText}
           placeholder="Місцевість..."
           onFocus={() => setIsShowKeyboard(true)}
+
           // value={state.location}
           // onChangeText={(value) =>
           //   setState((prevState) => ({ ...prevState, location: value }))

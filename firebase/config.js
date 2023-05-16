@@ -1,20 +1,25 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
 // const API_KEY = import.meta.env.VITE_API_KEY;
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAmGSYRpdzFx7zJbC7aV56Mq9Qu--Qdquc",
-  authDomain: "more-4713e.firebaseapp.com",
-  databaseURL: "https://more-4713e-default-rtdb.firebaseio.com",
-  projectId: "more-4713e",
-  storageBucket: "more-4713e.appspot.com",
-  messagingSenderId: "787779355287",
-  appId: "1:787779355287:web:e31a256dc04c2574ed1fd2",
+  apiKey: "AIzaSyDfZDTtX8dUjZIGyRT2mpiIzCkc42Ub35E",
+  authDomain: "test-a0668.firebaseapp.com",
+  databaseURL: "https://test-a0668-default-rtdb.firebaseio.com",
+  projectId: "test-a0668",
+  storageBucket: "test-a0668.appspot.com",
+  messagingSenderId: "421142403568",
+  appId: "1:421142403568:web:5639e865cf82cbe0faa535",
 };
 
 export const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 // console.log("auth++++", auth);
+export const db = getFirestore(app);
+export const database = getDatabase(app);
+export const storage = getStorage(app);
+// console.log("storage++++", storage);
