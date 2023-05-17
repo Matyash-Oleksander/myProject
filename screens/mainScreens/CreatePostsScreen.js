@@ -131,7 +131,7 @@ const CreatePostsScreen = ({ navigation }) => {
           style={styles.inputText}
           placeholder="Місцевість..."
           onFocus={() => setIsShowKeyboard(true)}
-
+          // onChangeText={setLocation}
           // value={state.location}
           // onChangeText={(value) =>
           //   setState((prevState) => ({ ...prevState, location: value }))

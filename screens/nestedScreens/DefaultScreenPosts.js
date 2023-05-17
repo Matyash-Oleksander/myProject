@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, Image, Button } from "react-native";
+import { View, StyleSheet, FlatList, Image, Button, Text } from "react-native";
 import { storage, db, database } from "../../firebase/config";
 import { doc, onSnapshot, collection } from "firebase/firestore";
 
+import { Feather } from "@expo/vector-icons";
+
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  // console.log("route.params", route.params);
 
   const getAllPost = () => {
     const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
@@ -17,7 +18,6 @@ const DefaultScreenPosts = ({ route, navigation }) => {
     getAllPost();
   }, []);
 
-  // console.log("posts", posts);
   return (
     <View style={styles.container}>
       <FlatList
@@ -35,13 +35,29 @@ const DefaultScreenPosts = ({ route, navigation }) => {
               source={{ uri: item.photo }}
               style={{ width: 350, height: 200 }}
             />
+            <View>
+              <Text style={styles.location}>{item.comment}</Text>
+            </View>
+            <View style={styles.rowContainer}>
+              <Feather
+                name="message-circle"
+                size={24}
+                color="black"
+                onPress={() => navigation.navigate("Comments")}
+              />
+
+              <Feather
+                name="map-pin"
+                size={24}
+                color="#BDBDBD"
+                style={styles.icon}
+                onPress={() =>
+                  navigation.navigate("Map", { location: item.location })
+                }
+              />
+            </View>
           </View>
         )}
-      />
-      <Button title="go to map" onPress={() => navigation.navigate("Map")} />
-      <Button
-        title="go to Comments"
-        onPress={() => navigation.navigate("Comments")}
       />
     </View>
   );
@@ -49,8 +65,17 @@ const DefaultScreenPosts = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: "center",
+  },
+  location: {
+    textAlign: "left",
+    justifyContent: "center",
+  },
+  rowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
   },
 });
 
