@@ -43,7 +43,9 @@ const DefaultScreenPosts = ({ route, navigation }) => {
                 name="message-circle"
                 size={24}
                 color="black"
-                onPress={() => navigation.navigate("Comments")}
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: item.id })
+                }
               />
 
               <Feather

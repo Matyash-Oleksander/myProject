@@ -16,7 +16,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 
-const CreatePostsScreen = ({ navigation }) => {
+const CreatePostsScreen = ({ route, navigation }) => {
   // const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
